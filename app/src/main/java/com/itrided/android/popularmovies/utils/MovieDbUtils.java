@@ -2,6 +2,8 @@ package com.itrided.android.popularmovies.utils;
 
 import android.support.annotation.NonNull;
 
+import com.itrided.android.popularmovies.BuildConfig;
+
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
@@ -16,10 +18,9 @@ public class MovieDbUtils {
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String POPULAR = "popular";
     private static final String TOP_RATED = "top_rated";
-    private static final String LANGUAGE = "&language=en-US";
-
-    //todo get this from the file and maybe add it to settings
-    private static final String apiKey = "?api_key=098cdc525ad63aac96864c766681be1d";
+    private static final String LANGUAGE_KEY = "language";
+    private static final String LANGUAGE_VAL = "en-US";
+    private static final String API_KEY = "api_key";
 
     public static Request getPopularMoviesRequest() {
         return buildMovieRequest(POPULAR);
@@ -40,8 +41,8 @@ public class MovieDbUtils {
     private static Request buildMovieRequest(@NonNull String type) {
         final HttpUrl httpUrl = HttpUrl.parse(BASE_URL).newBuilder()
                 .addPathSegment(type)
-                .addQueryParameter("api_key", "098cdc525ad63aac96864c766681be1d")
-                .addQueryParameter("language", "en-US")
+                .addQueryParameter(API_KEY, BuildConfig.MOVIEDB_API_KEY)
+                .addQueryParameter(LANGUAGE_KEY, LANGUAGE_VAL)
                 .build();
 
         return new Request.Builder()

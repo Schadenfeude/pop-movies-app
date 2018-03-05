@@ -1,10 +1,17 @@
 apply plugin: 'com.android.application'
 
+//**********************************//
+//Values
+def MOVIEDB_API_KEY = '"' + MovieDbApiKey + '"' ?: '"Missing MovieDBApi key, please add one to your gradle.properties file!"'
+//**********************************//
+
 android {
     compileSdkVersion rootProject.ext.compileVersion
     buildToolsVersion rootProject.ext.toolsVersion
 
     defaultConfig {
+        buildConfigField("String", "MOVIEDB_API_KEY", MOVIEDB_API_KEY)
+
         applicationId "com.itrided.android.popularmovies"
         minSdkVersion rootProject.ext.minVersion
         targetSdkVersion rootProject.ext.targetVersion
