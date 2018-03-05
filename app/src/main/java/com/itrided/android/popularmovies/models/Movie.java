@@ -1,11 +1,18 @@
 package com.itrided.android.popularmovies.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 /**
  * Created by Daniel on 2.03.18.
  */
-
+@Entity
 public class Movie {
 
+    //todo WIP probably for next version
+    @NonNull @PrimaryKey
+    private String id = "-1";
     private String title;
     private String releaseDate;
     private String poster;
@@ -18,10 +25,12 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String title, String releaseDate, String poster, String voteAvg, String plotSynopsis) {
+    public Movie(String title, String releaseDate, String poster, String backdrop,
+                 String voteAvg, String plotSynopsis) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.poster = poster;
+        this.backdrop = backdrop;
         this.voteAvg = voteAvg;
         this.plotSynopsis = plotSynopsis;
     }

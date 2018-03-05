@@ -7,5 +7,6 @@ package com.itrided.android.popularmovies.controllers;
 public class LibraryController {
 
     public LibraryController() {
+
     }
 }
