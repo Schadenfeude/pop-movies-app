@@ -21,8 +21,6 @@ public class MovieDbUtils {
     private static final String IMAGES_RESOLUTION = "w185/";
     private static final String IMAGES_BASE_URL = "https://image.tmdb.org/t/p/" + IMAGES_RESOLUTION;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
-    private static final String POPULAR_URL = "popular";
-    private static final String TOP_RATED_URL = "top_rated";
     private static final String LANGUAGE_KEY = "language";
     private static final String LANGUAGE_VAL = "en-US";
     private static final String API_KEY = "api_key";
@@ -38,18 +36,18 @@ public class MovieDbUtils {
     public @interface MovieCategory {
     }
 
-    public static final String TOP_RATED = "Top Rated";
-    public static final String POPULAR = "Popular";
-    public static final String FAVOURITE = "Favourite";
+    public static final String TOP_RATED = "popular";
+    public static final String POPULAR = "popular";
+    public static final String FAVOURITE = "favourite";
     //endregion Public Fields
 
     //region API Methods
     public static Request getPopularMoviesRequest() {
-        return buildMovieRequest(POPULAR_URL);
+        return buildMovieRequest(POPULAR);
     }
 
     public static Request getTopRatedMoviesRequest() {
-        return buildMovieRequest(TOP_RATED_URL);
+        return buildMovieRequest(TOP_RATED);
     }
 
     public static Request getMovieInfoRequest(@NonNull String movieId) {
