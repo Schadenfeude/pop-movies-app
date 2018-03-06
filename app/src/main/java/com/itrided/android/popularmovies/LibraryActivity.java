@@ -35,21 +35,25 @@ public class LibraryActivity extends AppCompatActivity {
     //endregion Constants
 
     //region Fields
-    @Nullable @BindView(R.id.library_rv) RecyclerView mLibraryRecyclerView;
-    @Nullable @BindView(R.id.navigation) BottomNavigationView navigation;
+    @Nullable
+    @BindView(R.id.library_rv)
+    RecyclerView mLibraryRecyclerView;
+    @Nullable
+    @BindView(R.id.navigation)
+    BottomNavigationView navigation;
 
     private LibraryAdapter libraryAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_home:
-
+                libraryAdapter.clear();
                 return true;
             case R.id.navigation_top_rated:
-                getTopRatedMovies();
+                loadMovies(MovieDbUtils.TOP_RATED);
                 return true;
             case R.id.navigation_popular:
-
+                loadMovies(MovieDbUtils.POPULAR);
                 return true;
         }
         return false;
@@ -71,16 +75,18 @@ public class LibraryActivity extends AppCompatActivity {
     }
     //endregion Overridden Methods
 
-    private void getTopRatedMovies() {
+    //region Private Methods
+    //todo move these somewhere else
+    private void loadMovies(@MovieDbUtils.MovieCategory String category) {
         final OkHttpClient okHttpClient = new OkHttpClient();
-        final Request topRatedMoviesRequest = MovieDbUtils.getTopRatedMoviesRequest();
+        final Request movieRequest = getMovieRequest(category);
         final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
         compositeDisposable.add(
                 Single
                         .create((SingleEmitter<Response> emitter) -> {
                             final Response response =
-                                    okHttpClient.newCall(topRatedMoviesRequest).execute();
+                                    okHttpClient.newCall(movieRequest).execute();
 
                             if (!emitter.isDisposed()) {
                                 emitter.onSuccess(response);
@@ -94,7 +100,7 @@ public class LibraryActivity extends AppCompatActivity {
                                 String topRatedMoviesJson = "";
                                 try {
                                     topRatedMoviesJson = response.body().string();
-                                } catch (IOException e) {
+                                } catch (NullPointerException | IOException e) {
                                     e.printStackTrace();
                                 }
                                 final List<Movie> movies = JSONUtils.parseMovieList(topRatedMoviesJson);
@@ -107,4 +113,19 @@ public class LibraryActivity extends AppCompatActivity {
                             }
                         }));
     }
+
+    private Request getMovieRequest(@MovieDbUtils.MovieCategory String category) {
+        switch (category) {
+            case MovieDbUtils.FAVOURITE:
+                //todo implement
+                return null;
+            case MovieDbUtils.POPULAR:
+                return MovieDbUtils.getPopularMoviesRequest();
+            case MovieDbUtils.TOP_RATED:
+                return MovieDbUtils.getTopRatedMoviesRequest();
+            default:
+                return null;
+        }
+    }
+    //endregion Private Methods
 }

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 //**********************************//
 //Values
-def MOVIEDB_API_KEY = '"' + MovieDbApiKey + '"' ?: '"Missing MovieDBApi key, please add one to your gradle.properties file!"'
+def MOVIEDB_API_KEY = '"' + MovieDbApiKey + '"' ?: '"Missing MovieDBApi key, please refer to the README.md file for insructions!"'
 //**********************************//
 
 android {

@@ -1,6 +1,9 @@
 package com.itrided.android.popularmovies.adapters;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
 import com.itrided.android.popularmovies.models.Movie;
+import com.itrided.android.popularmovies.utils.ImageLoader;
+import com.itrided.android.popularmovies.utils.MovieDbUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +22,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Request;
 
 /**
  * Created by Daniel on 2.03.18.
@@ -26,9 +32,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
 
     private Set<MovieViewHolder> viewHolders = new HashSet<>();
     private List<Movie> mMovies;
-
-    public LibraryAdapter() {
-    }
 
     //region Overridden Methods
     @NonNull
@@ -65,9 +68,16 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        this.mMovies = null;
+        notifyDataSetChanged();
+    }
+
     static class MovieViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.poster_iv) ImageView poster;
-        @BindView(R.id.title_tv) TextView title;
+        @BindView(R.id.poster_iv)
+        ImageView poster;
+        @BindView(R.id.title_tv)
+        TextView title;
 
         MovieViewHolder(View itemView) {
             super(itemView);
@@ -76,6 +86,20 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
 
         void bind(Movie movie) {
             title.setText(movie.getTitle());
+            loadPoster(movie.getPoster());
+        }
+
+        private void loadPoster(@Nullable String imageUrl) {
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                return;
+            }
+
+            final Context context = itemView.getContext();
+            final Request imageRequest = MovieDbUtils.getMovieImage(imageUrl);
+            final Uri imageUri = Uri.parse(imageRequest.url().toString());
+
+            ImageLoader.getInstance(context)
+                    .loadImageIntoTarget(imageUri, poster);
         }
     }
 }
