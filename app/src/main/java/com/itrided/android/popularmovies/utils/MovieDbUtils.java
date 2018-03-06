@@ -36,7 +36,7 @@ public class MovieDbUtils {
     public @interface MovieCategory {
     }
 
-    public static final String TOP_RATED = "popular";
+    public static final String TOP_RATED = "top_rated";
     public static final String POPULAR = "popular";
     public static final String FAVOURITE = "favourite";
     //endregion Public Fields
