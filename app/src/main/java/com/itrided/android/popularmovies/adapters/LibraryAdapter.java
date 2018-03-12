@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
+import com.itrided.android.popularmovies.library.LibraryItemOnClickListener;
 import com.itrided.android.popularmovies.models.Movie;
 import com.itrided.android.popularmovies.utils.ImageLoader;
 import com.itrided.android.popularmovies.utils.MovieDbUtils;
@@ -30,8 +31,19 @@ import okhttp3.Request;
 
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieViewHolder> {
 
-    private Set<MovieViewHolder> viewHolders = new HashSet<>();
     private List<Movie> mMovies;
+    private LibraryItemOnClickListener mClickListener;
+
+
+    public LibraryAdapter(@NonNull LibraryItemOnClickListener clickListener) {
+        this(null, clickListener);
+    }
+
+    public LibraryAdapter(@Nullable List<Movie> movies,
+                          @NonNull LibraryItemOnClickListener clickListener) {
+        this.mMovies = movies;
+        this.mClickListener = clickListener;
+    }
 
     //region Overridden Methods
     @NonNull
@@ -40,7 +52,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
         final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.content_library, null);
         final MovieViewHolder viewHolder = new MovieViewHolder(view);
-        viewHolders.add(viewHolder);
 
         return viewHolder;
     }
@@ -48,13 +59,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         final Movie movie = mMovies.get(position);
-        holder.bind(movie);
-    }
-
-    @Override
-    public void onViewRecycled(@NonNull MovieViewHolder holder) {
-        viewHolders.remove(holder);
-        super.onViewRecycled(holder);
+        holder.bind(movie, mClickListener);
     }
 
     @Override
@@ -84,9 +89,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(Movie movie) {
+        void bind(@NonNull Movie movie, @NonNull LibraryItemOnClickListener clickListener) {
             title.setText(movie.getTitle());
             loadPoster(movie.getPoster());
+            itemView.setOnClickListener(v -> clickListener.onItemClicked(movie));
         }
 
         private void loadPoster(@Nullable String imageUrl) {
@@ -95,7 +101,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
             }
 
             final Context context = itemView.getContext();
-            final Request imageRequest = MovieDbUtils.getMovieImage(imageUrl);
+            final Request imageRequest = MovieDbUtils.buildImageRequest(imageUrl);
             final Uri imageUri = Uri.parse(imageRequest.url().toString());
 
             ImageLoader.getInstance(context)

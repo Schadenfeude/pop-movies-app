@@ -19,6 +19,7 @@ import java.util.List;
 public class JSONUtils {
 
     private static final String RESULTS_KEY = "results";
+    private static final String ID_KEY = "id";
     private static final String TITLE_KEY = "title";
     private static final String OVERVIEW_KEY = "overview";
     private static final String POSTER_PATH_KEY = "poster_path";
@@ -35,6 +36,7 @@ public class JSONUtils {
         try {
             final JSONObject movieJson = new JSONObject(movieJsonString);
 
+            final int id = movieJson.optInt(ID_KEY);
             final String title = movieJson.optString(TITLE_KEY, FALLBACK);
             final String overview = movieJson.optString(OVERVIEW_KEY, FALLBACK);
             final String posterPath = movieJson.optString(POSTER_PATH_KEY, FALLBACK);
@@ -42,7 +44,7 @@ public class JSONUtils {
             final String voteAvg = movieJson.optString(VOTE_AVERAGE_KEY, FALLBACK);
             final String releaseDate = movieJson.optString(RELEASE_DATE_KEY, FALLBACK);
 
-            movie = new Movie(title, releaseDate, posterPath, backdropPath, voteAvg, overview);
+            movie = new Movie(id, title, releaseDate, posterPath, backdropPath, voteAvg, overview);
         } catch (JSONException e) {
             e.printStackTrace();
         }

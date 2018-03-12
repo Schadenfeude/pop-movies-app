@@ -11,8 +11,9 @@ import android.support.annotation.NonNull;
 public class Movie {
 
     //todo WIP probably for next version
-    @NonNull @PrimaryKey
-    private String id = "-1";
+    @NonNull
+    @PrimaryKey
+    private int id;
     private String title;
     private String releaseDate;
     private String poster;
@@ -25,14 +26,24 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String title, String releaseDate, String poster, String backdrop,
+    public Movie(int id, String title, String releaseDate, String poster, String backdrop,
                  String voteAvg, String plotSynopsis) {
+        this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.poster = poster;
         this.backdrop = backdrop;
         this.voteAvg = voteAvg;
         this.plotSynopsis = plotSynopsis;
+    }
+
+    @NonNull
+    public int getId() {
+        return id;
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
     }
 
     public String getTitle() {

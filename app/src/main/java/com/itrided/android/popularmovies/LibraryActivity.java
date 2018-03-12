@@ -1,5 +1,6 @@
 package com.itrided.android.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.itrided.android.popularmovies.adapters.LibraryAdapter;
+import com.itrided.android.popularmovies.library.LibraryItemOnClickListener;
 import com.itrided.android.popularmovies.models.Movie;
 import com.itrided.android.popularmovies.utils.JSONUtils;
 import com.itrided.android.popularmovies.utils.MovieDbUtils;
@@ -58,6 +60,12 @@ public class LibraryActivity extends AppCompatActivity {
         }
         return false;
     };
+    private LibraryItemOnClickListener itemOnClickListener = movie -> {
+        final Intent startDetailsIntent = new Intent(this, DetailActivity.class);
+        startDetailsIntent.putExtra("MOVIE_ID", movie.getId());
+
+        startActivity(startDetailsIntent);
+    };
     //endregion Fields
 
     //region Overridden Methods
@@ -67,7 +75,7 @@ public class LibraryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_library);
         ButterKnife.bind(this);
 
-        libraryAdapter = new LibraryAdapter();
+        libraryAdapter = new LibraryAdapter(itemOnClickListener);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mLibraryRecyclerView.setAdapter(libraryAdapter);
@@ -76,10 +84,10 @@ public class LibraryActivity extends AppCompatActivity {
     //endregion Overridden Methods
 
     //region Private Methods
-    //todo move these somewhere else
+    //todo move this somewhere else and refactor when local persistence is done
     private void loadMovies(@MovieDbUtils.MovieCategory String category) {
         final OkHttpClient okHttpClient = new OkHttpClient();
-        final Request movieRequest = getMovieRequest(category);
+        final Request movieRequest = MovieDbUtils.buildMovieCategoryRequest(category);
         final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
         compositeDisposable.add(
@@ -112,20 +120,6 @@ public class LibraryActivity extends AppCompatActivity {
 
                             }
                         }));
-    }
-
-    private Request getMovieRequest(@MovieDbUtils.MovieCategory String category) {
-        switch (category) {
-            case MovieDbUtils.FAVOURITE:
-                //todo implement
-                return null;
-            case MovieDbUtils.POPULAR:
-                return MovieDbUtils.getPopularMoviesRequest();
-            case MovieDbUtils.TOP_RATED:
-                return MovieDbUtils.getTopRatedMoviesRequest();
-            default:
-                return null;
-        }
     }
     //endregion Private Methods
 }

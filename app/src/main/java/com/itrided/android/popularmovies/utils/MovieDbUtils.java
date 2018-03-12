@@ -42,40 +42,32 @@ public class MovieDbUtils {
     //endregion Public Fields
 
     //region API Methods
-    public static Request getPopularMoviesRequest() {
-        return buildMovieRequest(POPULAR);
+    public static Request buildMovieCategoryRequest(@NonNull @MovieCategory String category) {
+        return buildMovieRequest(category);
     }
 
-    public static Request getTopRatedMoviesRequest() {
-        return buildMovieRequest(TOP_RATED);
-    }
-
-    public static Request getMovieInfoRequest(@NonNull String movieId) {
+    public static Request buildMovieDetailsRequest(@NonNull String movieId) {
         return buildMovieRequest(movieId);
     }
 
-    public static Request getMovieImage(@NonNull String imageUrl) {
-        return buildImageRequest(imageUrl);
-    }
-    //endregion API Methods
-
-    //region Private Methods
-    private static Request buildMovieRequest(@NonNull String type) {
-        final HttpUrl httpUrl = HttpUrl.parse(BASE_URL).newBuilder()
-                .addPathSegment(type)
-                .addQueryParameter(API_KEY, BuildConfig.MOVIEDB_API_KEY)
-                .addQueryParameter(LANGUAGE_KEY, LANGUAGE_VAL)
+    public static Request buildImageRequest(@NonNull String imageUrl) {
+        final String removedSlashes = imageUrl.replace("/", "");
+        final HttpUrl httpUrl = HttpUrl.parse(IMAGES_BASE_URL).newBuilder()
+                .addPathSegment(removedSlashes)
                 .build();
 
         return new Request.Builder()
                 .url(httpUrl)
                 .build();
     }
+    //endregion API Methods
 
-    private static Request buildImageRequest(@NonNull String imageUrl) {
-        final String removedSlashes = imageUrl.replace("/", "");
-        final HttpUrl httpUrl = HttpUrl.parse(IMAGES_BASE_URL).newBuilder()
-                .addPathSegment(removedSlashes)
+    //region Private Methods
+    private static Request buildMovieRequest(@NonNull String movie) {
+        final HttpUrl httpUrl = HttpUrl.parse(BASE_URL).newBuilder()
+                .addPathSegment(movie)
+                .addQueryParameter(API_KEY, BuildConfig.MOVIEDB_API_KEY)
+                .addQueryParameter(LANGUAGE_KEY, LANGUAGE_VAL)
                 .build();
 
         return new Request.Builder()
