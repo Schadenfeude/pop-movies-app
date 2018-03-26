@@ -15,6 +15,6 @@
     <item
             android:id="@+id/navigation_popular"
             android:icon="@drawable/ic_popular"
-            android:title="@string/title_new_releases"/>
+            android:title="@string/title_popular"/>
 
 </menu>

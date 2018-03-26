@@ -49,12 +49,15 @@ public class LibraryActivity extends AppCompatActivity {
             = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_home:
+                getSupportActionBar().setTitle(R.string.title_home);
                 libraryAdapter.clear();
                 return true;
             case R.id.navigation_top_rated:
+                getSupportActionBar().setTitle(R.string.title_top_rated);
                 loadMovies(MovieDbUtils.TOP_RATED);
                 return true;
             case R.id.navigation_popular:
+                getSupportActionBar().setTitle(R.string.title_popular);
                 loadMovies(MovieDbUtils.POPULAR);
                 return true;
         }
@@ -77,6 +80,7 @@ public class LibraryActivity extends AppCompatActivity {
 
         libraryAdapter = new LibraryAdapter(itemOnClickListener);
 
+        getSupportActionBar().setTitle(R.string.title_home);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mLibraryRecyclerView.setAdapter(libraryAdapter);
         mLibraryRecyclerView.setLayoutManager(new GridLayoutManager(this, LIBRARY_GRID_COLUMNS));
