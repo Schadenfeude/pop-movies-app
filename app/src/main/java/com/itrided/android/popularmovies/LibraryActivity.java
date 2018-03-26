@@ -32,7 +32,7 @@ import okhttp3.Response;
 public class LibraryActivity extends AppCompatActivity {
 
     //region Constants
-    //todo choose these dynamically
+    //todo choose these dynamically or use different values for small, medium, large & xl screens
     private static final int LIBRARY_GRID_COLUMNS = 2;
     //endregion Constants
 
@@ -62,7 +62,7 @@ public class LibraryActivity extends AppCompatActivity {
     };
     private LibraryItemOnClickListener itemOnClickListener = movie -> {
         final Intent startDetailsIntent = new Intent(this, DetailActivity.class);
-        startDetailsIntent.putExtra("MOVIE_ID", movie.getId());
+        startDetailsIntent.putExtra(DetailActivity.EXTRA_MOVIE_ID, movie.getId());
 
         startActivity(startDetailsIntent);
     };

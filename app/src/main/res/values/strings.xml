@@ -95,4 +95,7 @@
     <string name="title_home">Home</string>
     <string name="title_top_rated">Top Rated</string>
     <string name="title_new_releases">Popular</string>
+    <string name="release_date">Release Date</string>
+    <string name="rating">Rating</string>
+    <string name="movie_backdrop">Movie Backdrop</string>
 </resources>

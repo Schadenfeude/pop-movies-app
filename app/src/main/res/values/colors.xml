@@ -9,4 +9,5 @@
 
     <!-- Icon Colors -->
     <color name="iconFavorite">#FF1744</color>
+    <color name="iconStar">#FF9E40</color>
 </resources>

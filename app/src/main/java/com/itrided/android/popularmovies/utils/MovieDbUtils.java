@@ -18,7 +18,7 @@ import okhttp3.Request;
 public class MovieDbUtils {
 
     //region Private Fields
-    private static final String IMAGES_RESOLUTION = "w185/";
+    private static final String IMAGES_RESOLUTION = "w780/";
     private static final String IMAGES_BASE_URL = "https://image.tmdb.org/t/p/" + IMAGES_RESOLUTION;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String LANGUAGE_KEY = "language";
@@ -51,9 +51,9 @@ public class MovieDbUtils {
     }
 
     public static Request buildImageRequest(@NonNull String imageUrl) {
-        final String removedSlashes = imageUrl.replace("/", "");
+        final String removedSlashesImageUrl = imageUrl.replace("/", "");
         final HttpUrl httpUrl = HttpUrl.parse(IMAGES_BASE_URL).newBuilder()
-                .addPathSegment(removedSlashes)
+                .addPathSegment(removedSlashesImageUrl)
                 .build();
 
         return new Request.Builder()

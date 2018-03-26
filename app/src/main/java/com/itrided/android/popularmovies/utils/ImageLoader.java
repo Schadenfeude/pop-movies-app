@@ -14,6 +14,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Request;
+
 /**
  * Created by Daniel on 6.03.18.
  */
@@ -36,7 +38,10 @@ public class ImageLoader {
         return instance;
     }
 
-    public void loadImageIntoTarget(@NonNull Uri imageUri, @NonNull ImageView imageView) {
+    public void loadImageIntoTarget(@NonNull String imageUrl, @NonNull ImageView imageView) {
+        final Request imageRequest = MovieDbUtils.buildImageRequest(imageUrl);
+        final Uri imageUri = Uri.parse(imageRequest.url().toString());
+
         pablo.load(imageUri)
                 .placeholder(R.drawable.progress_animation)
                 .error(R.drawable.ic_theaters)

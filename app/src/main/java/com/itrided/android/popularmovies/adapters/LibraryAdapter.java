@@ -1,7 +1,6 @@
 package com.itrided.android.popularmovies.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -15,15 +14,11 @@ import com.itrided.android.popularmovies.R;
 import com.itrided.android.popularmovies.library.LibraryItemOnClickListener;
 import com.itrided.android.popularmovies.models.Movie;
 import com.itrided.android.popularmovies.utils.ImageLoader;
-import com.itrided.android.popularmovies.utils.MovieDbUtils;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Request;
 
 /**
  * Created by Daniel on 2.03.18.
@@ -81,8 +76,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.poster_iv)
         ImageView poster;
-        @BindView(R.id.title_tv)
-        TextView title;
+        @BindView(R.id.rating_tv)
+        TextView rating;
 
         MovieViewHolder(View itemView) {
             super(itemView);
@@ -90,7 +85,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
         }
 
         void bind(@NonNull Movie movie, @NonNull LibraryItemOnClickListener clickListener) {
-            title.setText(movie.getTitle());
+            rating.setText(movie.getVoteAvg());
             loadPoster(movie.getPoster());
             itemView.setOnClickListener(v -> clickListener.onItemClicked(movie));
         }
@@ -99,13 +94,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
             if (imageUrl == null || imageUrl.isEmpty()) {
                 return;
             }
-
             final Context context = itemView.getContext();
-            final Request imageRequest = MovieDbUtils.buildImageRequest(imageUrl);
-            final Uri imageUri = Uri.parse(imageRequest.url().toString());
 
             ImageLoader.getInstance(context)
-                    .loadImageIntoTarget(imageUri, poster);
+                    .loadImageIntoTarget(imageUrl, poster);
         }
     }
 }
