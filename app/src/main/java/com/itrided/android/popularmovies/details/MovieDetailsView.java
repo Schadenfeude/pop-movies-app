@@ -1,4 +1,4 @@
-package com.itrided.android.popularmovies.views;
+package com.itrided.android.popularmovies.details;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
-import com.itrided.android.popularmovies.models.Movie;
+import com.itrided.android.popularmovies.persistence.Movie;
 import com.itrided.android.popularmovies.utils.ImageLoader;
 
 import butterknife.BindView;

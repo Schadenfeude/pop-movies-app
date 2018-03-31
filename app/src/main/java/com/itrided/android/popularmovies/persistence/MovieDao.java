@@ -1,4 +1,4 @@
-package com.itrided.android.popularmovies.models;
+package com.itrided.android.popularmovies.persistence;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;

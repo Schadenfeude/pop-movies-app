@@ -1,4 +1,4 @@
-package com.itrided.android.popularmovies.adapters;
+package com.itrided.android.popularmovies.library;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
-import com.itrided.android.popularmovies.library.LibraryItemOnClickListener;
-import com.itrided.android.popularmovies.models.Movie;
+import com.itrided.android.popularmovies.persistence.Movie;
 import com.itrided.android.popularmovies.utils.ImageLoader;
 
 import java.util.List;

@@ -3,10 +3,10 @@ package com.itrided.android.popularmovies;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.itrided.android.popularmovies.models.Movie;
+import com.itrided.android.popularmovies.persistence.Movie;
 import com.itrided.android.popularmovies.utils.JSONUtils;
 import com.itrided.android.popularmovies.utils.MovieDbUtils;
-import com.itrided.android.popularmovies.views.MovieDetailsView;
+import com.itrided.android.popularmovies.details.MovieDetailsView;
 
 import java.io.IOException;
 

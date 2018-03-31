@@ -1,4 +1,4 @@
-package com.itrided.android.popularmovies.models;
+package com.itrided.android.popularmovies.persistence;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

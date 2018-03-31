@@ -1,17 +1,34 @@
-package com.itrided.android.popularmovies.data;
+package com.itrided.android.popularmovies.persistence;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import static com.itrided.android.popularmovies.persistence.MovieContract.AUTHORITY;
+import static com.itrided.android.popularmovies.persistence.MovieContract.FAVOURITES_PATH;
 
 /**
  * Created by Daniel on 5.03.18.
  */
 
 public class MovieContentProvider extends ContentProvider {
+    public static final int FAVORITES = 100;
+    public static final int FAVORITES_WITH_ID = 101;
+
+    private static final UriMatcher URI_MATCHER = buildUriMatcher();
+
+    public static UriMatcher buildUriMatcher() {
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        uriMatcher.addURI(AUTHORITY, FAVOURITES_PATH, FAVORITES);
+        uriMatcher.addURI(AUTHORITY, FAVOURITES_PATH + "/#", FAVORITES_WITH_ID);
+        return uriMatcher;
+    }
+
     @Override
     public boolean onCreate() {
         return false;
