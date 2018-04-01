@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.itrided.android.popularmovies.library.LibraryAdapter;
 import com.itrided.android.popularmovies.library.LibraryItemOnClickListener;
-import com.itrided.android.popularmovies.persistence.Movie;
+import com.itrided.android.popularmovies.model.Movie;
 import com.itrided.android.popularmovies.utils.JSONUtils;
 import com.itrided.android.popularmovies.utils.MovieDbUtils;
 

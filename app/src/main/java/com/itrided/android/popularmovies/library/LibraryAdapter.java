@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
-import com.itrided.android.popularmovies.persistence.Movie;
+import com.itrided.android.popularmovies.model.Movie;
 import com.itrided.android.popularmovies.utils.ImageLoader;
 
 import java.util.List;

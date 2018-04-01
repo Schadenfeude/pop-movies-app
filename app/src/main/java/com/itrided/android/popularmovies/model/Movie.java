@@ -1,4 +1,4 @@
-package com.itrided.android.popularmovies.persistence;
+package com.itrided.android.popularmovies.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -10,9 +10,6 @@ import android.support.annotation.NonNull;
 @Entity
 public class Movie {
 
-    //todo WIP probably for next version
-    @NonNull
-    @PrimaryKey
     private int id;
     private String title;
     private String releaseDate;
@@ -26,7 +23,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(int id, String title, String releaseDate, String poster, String backdrop,
+    public Movie(@NonNull int id, String title, String releaseDate, String poster, String backdrop,
                  String voteAvg, String plotSynopsis) {
         this.id = id;
         this.title = title;

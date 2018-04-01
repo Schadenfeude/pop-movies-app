@@ -36,6 +36,11 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".LibraryActivity" />
         </activity>
+
+        <provider
+                android:name=".persistence.MovieContentProvider"
+                android:authorities="com.itrided.android.popularmovies"
+                android:exported="false"/>
     </application>
 
 </manifest>
