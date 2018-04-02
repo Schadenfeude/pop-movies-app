@@ -6,8 +6,8 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorPrimaryLight">#484848</color>
     <color name="colorAccent">#FF6D00</color>
+    <color name="colorAccentLight">#FF9E40</color>
 
     <!-- Icon Colors -->
     <color name="iconFavorite">#FF1744</color>
-    <color name="iconStar">#FF9E40</color>
 </resources>

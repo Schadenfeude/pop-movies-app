@@ -48,17 +48,15 @@ public class LibraryActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
-            case R.id.navigation_home:
-                getSupportActionBar().setTitle(R.string.title_home);
-                libraryAdapter.clear();
-                return true;
             case R.id.navigation_top_rated:
-                getSupportActionBar().setTitle(R.string.title_top_rated);
                 loadMovies(MovieDbUtils.TOP_RATED);
                 return true;
             case R.id.navigation_popular:
-                getSupportActionBar().setTitle(R.string.title_popular);
                 loadMovies(MovieDbUtils.POPULAR);
+                return true;
+            case R.id.navigation_favourite:
+                // todo get actual favourite movies
+                libraryAdapter.clear();
                 return true;
         }
         return false;
@@ -80,7 +78,7 @@ public class LibraryActivity extends AppCompatActivity {
 
         libraryAdapter = new LibraryAdapter(itemOnClickListener);
 
-        getSupportActionBar().setTitle(R.string.title_home);
+        //todo load top rated movies beforehand
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mLibraryRecyclerView.setAdapter(libraryAdapter);
         mLibraryRecyclerView.setLayoutManager(new GridLayoutManager(this, LIBRARY_GRID_COLUMNS));
