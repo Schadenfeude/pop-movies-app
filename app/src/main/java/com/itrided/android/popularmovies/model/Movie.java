@@ -1,14 +1,25 @@
 package com.itrided.android.popularmovies.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 /**
  * Created by Daniel on 2.03.18.
  */
-@Entity
-public class Movie {
+public class Movie implements Parcelable {
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     private int id;
     private String title;
@@ -17,13 +28,14 @@ public class Movie {
     private String backdrop;
     private String voteAvg;
     private String plotSynopsis;
+    private boolean favourite;
 //    private String language;
 //    private String genres;
 
     public Movie() {
     }
 
-    public Movie(@NonNull int id, String title, String releaseDate, String poster, String backdrop,
+    public Movie(int id, String title, String releaseDate, String poster, String backdrop,
                  String voteAvg, String plotSynopsis) {
         this.id = id;
         this.title = title;
@@ -34,12 +46,11 @@ public class Movie {
         this.plotSynopsis = plotSynopsis;
     }
 
-    @NonNull
     public int getId() {
         return id;
     }
 
-    public void setId(@NonNull int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -90,4 +101,48 @@ public class Movie {
     public void setPlotSynopsis(String plotSynopsis) {
         this.plotSynopsis = plotSynopsis;
     }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    //region Parcelable Implementation
+
+    /**
+     * This constructor's read order and {@link #writeToParcel(Parcel, int)}'s write order MUST match!
+     *
+     * @param in The Movie parcel
+     */
+    private Movie(@NonNull Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.releaseDate = in.readString();
+        this.poster = in.readString();
+        this.backdrop = in.readString();
+        this.voteAvg = in.readString();
+        this.plotSynopsis = in.readString();
+        this.favourite = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.poster);
+        dest.writeString(this.backdrop);
+        dest.writeString(this.voteAvg);
+        dest.writeString(this.plotSynopsis);
+        dest.writeByte((byte) (this.favourite ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    //endregion Parcelable Implementation
 }

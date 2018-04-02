@@ -34,8 +34,8 @@
 
         <View
                 android:id="@+id/vote_avg_view"
-                android:layout_width="@dimen/icon_dimens"
-                android:layout_height="@dimen/icon_dimens"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
@@ -60,10 +60,10 @@
 
         <ImageView
                 android:id="@+id/release_date_iv"
-                android:layout_width="@dimen/icon_dimens"
-                android:layout_height="@dimen/icon_dimens"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_width="@dimen/default_icon_size"
+                android:layout_height="@dimen/default_icon_size"
+                android:layout_marginStart="@dimen/details_icon_margin"
+                android:layout_marginLeft="@dimen/details_icon_margin"
                 app:layout_constraintTop_toBottomOf="@id/vote_avg_view"
                 app:layout_constraintLeft_toRightOf="@id/vertical_guideline"
                 android:contentDescription="@string/movie_release_date"

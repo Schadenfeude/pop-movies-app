@@ -3,12 +3,20 @@ package com.itrided.android.popularmovies;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-public class SplashActivity extends AppCompatActivity {
+import com.itrided.android.popularmovies.model.Movie;
+import com.itrided.android.popularmovies.utils.JSONUtils;
+import com.itrided.android.popularmovies.utils.MovieDbUtils;
+import com.itrided.android.popularmovies.utils.MovieLoader;
 
-    private static final long DUMMY_SLEEP_MILLIS = 1000; //1 second
+import java.io.IOException;
+import java.util.ArrayList;
+
+import io.reactivex.observers.DisposableSingleObserver;
+import okhttp3.Response;
+
+public class SplashActivity extends AppCompatActivity {
 
     //region Overridden Methods
     @Override
@@ -19,13 +27,35 @@ public class SplashActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
 
-        //todo remove delayed post and query the movies API
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            final Intent intent = new Intent(this, LibraryActivity.class);
-            startActivity(intent);
-            finish();
-        }, DUMMY_SLEEP_MILLIS);
+        loadMoviesAndStartLibrary();
+    }
+
+    private void loadMoviesAndStartLibrary() {
+        final Intent intent = new Intent(this, LibraryActivity.class);
+        MovieLoader.loadMovies(MovieDbUtils.TOP_RATED, getObserver(intent));
+    }
+
+    private DisposableSingleObserver<Response> getObserver(Intent intent) {
+        return new DisposableSingleObserver<Response>() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    final String topRatedMoviesJson = response.body().string();
+                    final ArrayList<Movie> movies = JSONUtils.parseMovieList(topRatedMoviesJson);
+                    intent.putParcelableArrayListExtra(LibraryActivity.MOVIES, movies);
+
+                    startActivity(intent);
+                    finish();
+                } catch (NullPointerException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        };
     }
     //endregion Overridden Methods
 }

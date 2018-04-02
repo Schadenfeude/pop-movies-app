@@ -28,7 +28,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
     private List<Movie> mMovies;
     private LibraryItemOnClickListener mClickListener;
 
-
     public LibraryAdapter(@NonNull LibraryItemOnClickListener clickListener) {
         this(null, clickListener);
     }
@@ -74,9 +73,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.poster_iv)
-        ImageView poster;
+        ImageView posterIv;
         @BindView(R.id.rating_tv)
-        TextView rating;
+        TextView ratingTv;
 
         MovieViewHolder(View itemView) {
             super(itemView);
@@ -84,7 +83,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
         }
 
         void bind(@NonNull Movie movie, @NonNull LibraryItemOnClickListener clickListener) {
-            rating.setText(movie.getVoteAvg());
+            ratingTv.setText(movie.getVoteAvg());
             loadPoster(movie.getPoster());
             itemView.setOnClickListener(v -> clickListener.onItemClicked(movie));
         }
@@ -96,7 +95,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
             final Context context = itemView.getContext();
 
             ImageLoader.getInstance(context)
-                    .loadImageIntoTarget(imageUrl, poster);
+                    .loadImageIntoTarget(imageUrl, posterIv);
         }
     }
 }

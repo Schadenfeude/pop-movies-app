@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Daniel on 4.03.18.
@@ -53,7 +52,7 @@ public class JSONUtils {
     }
 
     @Nullable
-    public static List<Movie> parseMovieList(@NonNull String moviesJsonString) {
+    public static ArrayList<Movie> parseMovieList(@NonNull String moviesJsonString) {
         try {
             final JSONObject moviesJson = new JSONObject(moviesJsonString);
             final JSONArray results = moviesJson.optJSONArray(RESULTS_KEY);
