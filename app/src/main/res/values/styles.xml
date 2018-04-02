@@ -27,4 +27,12 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="RatingStarTheme">
+        <item name="android:padding">@dimen/rating_star_padding</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

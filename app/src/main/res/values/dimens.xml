@@ -11,5 +11,8 @@
     <dimen name="activity_horizontal_padding">16dp</dimen>
     <dimen name="activity_vertical_padding">16dp</dimen>
 
-    <dimen name="library_spacing">5dp</dimen>
+    <!-- Library margins -->
+    <dimen name="library_spacing_horizontal">5dp</dimen>
+    <dimen name="library_spacing_vertical">10dp</dimen>
+    <dimen name="rating_star_padding">20dp</dimen>
 </resources>

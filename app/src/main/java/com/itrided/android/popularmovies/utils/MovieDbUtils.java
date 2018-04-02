@@ -18,7 +18,7 @@ import okhttp3.Request;
 public class MovieDbUtils {
 
     //region Private Fields
-    private static final String IMAGES_RESOLUTION = "w342/";
+    private static final String IMAGES_RESOLUTION = "w500/";
     private static final String IMAGES_BASE_URL = "https://image.tmdb.org/t/p/" + IMAGES_RESOLUTION;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String LANGUAGE_KEY = "language";

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="com.itrided.android.popularmovies.LibraryActivity">
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/library_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/activity_vertical_padding"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/navigation"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:paddingTop="@dimen/library_spacing_vertical"
+            android:paddingStart="@dimen/library_spacing_horizontal"
+            android:paddingEnd="@dimen/library_spacing_horizontal"
             tools:listitem="@layout/content_library"/>
 
     <android.support.design.widget.BottomNavigationView
@@ -24,9 +24,6 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
             app:itemIconTint="@color/bottom_navigation_bar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/navigation"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
