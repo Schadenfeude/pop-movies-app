@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+            android:id="@+id/trailers_label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/library_spacing_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/TextAppearance.AppCompat.Medium"
+            tools:text="Trailers:"/>
+
+    <ListView
+            android:id="@+id/trailers_lv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/trailers_list_item"
+            app:layout_constraintTop_toBottomOf="@id/trailers_label_tv"/>
+
+</android.support.constraint.ConstraintLayout>

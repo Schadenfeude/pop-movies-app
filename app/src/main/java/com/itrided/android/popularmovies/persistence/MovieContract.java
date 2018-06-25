@@ -11,7 +11,7 @@ public class MovieContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     public static final String MOVIES_TABLE_PATH = "movies";
-    public static final String FAVOURITES_PATH = "favorites";
+    public static final String FAVOURITES_PATH = "favourites";
 //    public static final String POPULAR_PATH = "popular";
 //    public static final String TOP_RATED_PATH = "top_rated";
 
@@ -31,11 +31,9 @@ public class MovieContract {
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_OVERVIEW = "overview";
         public static final String COLUMN_NAME_VOTE_AVERAGE = "voteAverage";
-        public static final String COLUMN_NAME_VOTE_COUNT = "voteCount";
         public static final String COLUMN_NAME_RELEASE_DATE = "releaseDate";
         public static final String COLUMN_NAME_POSTER_PATH = "posterPath";
         public static final String COLUMN_NAME_BACKDROP_PATH = "backdropPath";
-        public static final String COLUMN_NAME_FLAGS_PATH = "flagsPath";
     }
 }
 
