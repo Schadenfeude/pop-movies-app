@@ -28,6 +28,8 @@ public class LibraryActivity extends AppCompatActivity {
 
     //region Constants
     public static final String MOVIES = "MOVIES";
+
+    private static final int REQUEST_DETAILS = 100;
     //endregion Constants
 
     //region Fields
@@ -52,6 +54,21 @@ public class LibraryActivity extends AppCompatActivity {
         setupBottomNavigation();
         loadMovies();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_DETAILS && resultCode == RESULT_OK
+                && data.hasExtra(DetailActivity.EXTRA_MOVIE)) {
+            final Movie movie = data.getParcelableExtra(DetailActivity.EXTRA_MOVIE);
+
+            if (navigation != null && navigation.getSelectedItemId() == R.id.navigation_favourite) {
+                if (!movie.isFavourite()) {
+                    MovieLoader.loadFavourites(getContentResolver(),
+                            MovieLoader.getFavouritesObserver(libraryAdapter));
+                }
+            }
+        }
+    }
     //endregion Overridden Methods
 
     //region Private Methods
@@ -60,7 +77,7 @@ public class LibraryActivity extends AppCompatActivity {
             final Intent startDetailsIntent = new Intent(this, DetailActivity.class);
             startDetailsIntent.putExtra(DetailActivity.EXTRA_MOVIE, movie);
 
-            startActivity(startDetailsIntent);
+            startActivityForResult(startDetailsIntent, REQUEST_DETAILS);
         };
         final int libraryGridColumns = getResources().getInteger(R.integer.library_column_count);
 
@@ -79,8 +96,8 @@ public class LibraryActivity extends AppCompatActivity {
                     MovieLoader.loadMovies(MovieDbUtils.POPULAR, getMovieResponseObserver());
                     return true;
                 case R.id.navigation_favourite:
-                    // todo get actual favourite movies
-                    libraryAdapter.clear();
+                    MovieLoader.loadFavourites(getContentResolver(),
+                            MovieLoader.getFavouritesObserver(libraryAdapter));
                     return true;
             }
             return false;

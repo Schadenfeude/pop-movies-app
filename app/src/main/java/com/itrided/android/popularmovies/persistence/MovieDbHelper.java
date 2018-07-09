@@ -13,7 +13,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                     MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY," +
                     MovieContract.MovieEntry.COLUMN_NAME_TITLE + " TEXT," +
                     MovieContract.MovieEntry.COLUMN_NAME_OVERVIEW + " TEXT," +
-                    MovieContract.MovieEntry.COLUMN_NAME_VOTE_AVERAGE + " REAL," +
+                    MovieContract.MovieEntry.COLUMN_NAME_VOTE_AVERAGE + " TEXT," +
                     MovieContract.MovieEntry.COLUMN_NAME_RELEASE_DATE + " TEXT," +
                     MovieContract.MovieEntry.COLUMN_NAME_POSTER_PATH + " TEXT," +
                     MovieContract.MovieEntry.COLUMN_NAME_BACKDROP_PATH + " TEXT)";

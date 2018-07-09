@@ -3,6 +3,7 @@ package com.itrided.android.popularmovies.details;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -50,6 +51,7 @@ public class MovieDetailsView extends CoordinatorLayout {
     @BindView(R.id.release_date_tv)
     TextView tvReleaseDate;
 
+    private ContentResolver contentResolver;
     private Movie movie;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -72,9 +74,8 @@ public class MovieDetailsView extends CoordinatorLayout {
         inflate(context, R.layout.activity_detail, this);
         ButterKnife.bind(this);
 
-        fabFavorite.setOnClickListener(v -> {
-            toggleFavourite(context.getContentResolver());
-        });
+        contentResolver = context.getContentResolver();
+        fabFavorite.setOnClickListener(v -> toggleFavourite(contentResolver));
     }
 
     public void setMovieDetails(@NonNull Movie movieDetails) {
@@ -87,8 +88,11 @@ public class MovieDetailsView extends CoordinatorLayout {
         tvPlotSynopsis.setText(movieDetails.getPlotSynopsis());
         tvRating.setText(movieDetails.getVoteAvg());
         tvReleaseDate.setText(movieDetails.getReleaseDate());
-        //todo make sure to keep icon state properly!
-        toggleFavouriteIcon(movieDetails.isFavourite());
+        refreshMovieFavoriteStatus(contentResolver);
+    }
+
+    public Movie getMovie() {
+        return movie;
     }
 
     private void toggleFavourite(@NonNull ContentResolver contentResolver) {
@@ -103,7 +107,7 @@ public class MovieDetailsView extends CoordinatorLayout {
         }
     }
 
-    private void removeFromFavourites(ContentResolver contentResolver) {
+    private void removeFromFavourites(@NonNull ContentResolver contentResolver) {
         String stringId = Integer.toString(movie.getId());
         final Uri uri = MovieContract.MovieEntry.FAVOURITE_CONTENT_URI
                 .buildUpon()
@@ -133,7 +137,7 @@ public class MovieDetailsView extends CoordinatorLayout {
                         }));
     }
 
-    private void addToFavourites(ContentResolver contentResolver) {
+    private void addToFavourites(@NonNull ContentResolver contentResolver) {
         compositeDisposable
                 .add(Single.create((SingleEmitter<Uri> emitter) -> {
                     Uri uri = contentResolver
@@ -189,6 +193,22 @@ public class MovieDetailsView extends CoordinatorLayout {
             fabFavorite.setImageResource(R.drawable.ic_favorite);
         } else {
             fabFavorite.setImageResource(R.drawable.ic_favorite_border);
+        }
+    }
+
+    private void refreshMovieFavoriteStatus(@NonNull ContentResolver contentResolver) {
+        final Cursor cursor = contentResolver
+                .query(MovieContract.MovieEntry.FAVOURITE_CONTENT_URI,
+                        null,
+                        MovieContract.MovieEntry._ID + "=?",
+                        new String[]{Integer.toString(movie.getId())},
+                        null);
+
+        if (cursor != null) {
+            setFavourite(cursor.getCount() > 0);
+            cursor.close();
+        } else {
+            setFavourite(false);
         }
     }
 

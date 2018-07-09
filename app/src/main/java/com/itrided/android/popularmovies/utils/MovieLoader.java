@@ -1,6 +1,16 @@
 package com.itrided.android.popularmovies.utils;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+
+import com.itrided.android.popularmovies.library.LibraryAdapter;
+import com.itrided.android.popularmovies.model.Movie;
+import com.itrided.android.popularmovies.persistence.MovieContract;
+
+import java.util.ArrayList;
+
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -36,6 +46,76 @@ public class MovieLoader {
 
             if (!emitter.isDisposed()) {
                 emitter.onSuccess(response);
+            }
+        };
+    }
+
+    public static void loadFavourites(@NonNull ContentResolver contentResolver,
+                                      @NonNull DisposableSingleObserver<Cursor> responseObserver) {
+        final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+        compositeDisposable.add(
+                Single
+                        .create((SingleEmitter<Cursor> emitter) -> {
+                            final Cursor cursor = contentResolver
+                                    .query(MovieContract.MovieEntry.FAVOURITE_CONTENT_URI,
+                                            null,
+                                            null,
+                                            null,
+                                            null);
+                            if (!emitter.isDisposed()) {
+                                emitter.onSuccess(cursor);
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(responseObserver));
+
+    }
+
+    public static DisposableSingleObserver<Cursor> getFavouritesObserver(@NonNull final LibraryAdapter libraryAdapter) {
+        return new DisposableSingleObserver<Cursor>() {
+            @Override
+            public void onSuccess(Cursor cursor) {
+                libraryAdapter.setMovies(readMovieFromCursor(cursor));
+            }
+
+            private ArrayList<Movie> readMovieFromCursor(Cursor cursor) {
+                final ArrayList<Movie> retMovies = new ArrayList<>();
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    int idIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry._ID);
+                    int titleIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry.COLUMN_NAME_TITLE);
+                    int overviewIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry.COLUMN_NAME_OVERVIEW);
+                    int posterPathIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry.COLUMN_NAME_POSTER_PATH);
+                    int backdropPathIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry.COLUMN_NAME_BACKDROP_PATH);
+                    int voteAverageIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry.COLUMN_NAME_VOTE_AVERAGE);
+                    int releaseDateIdx = cursor.getColumnIndex(MovieContract
+                            .MovieEntry.COLUMN_NAME_RELEASE_DATE);
+
+                    cursor.moveToPosition(i);
+
+                    final Movie movie = new Movie();
+                    movie.setId(cursor.getInt(idIdx));
+                    movie.setTitle(cursor.getString(titleIdx));
+                    movie.setPlotSynopsis(cursor.getString(overviewIdx));
+                    movie.setPoster(cursor.getString(posterPathIdx));
+                    movie.setBackdrop(cursor.getString(backdropPathIdx));
+                    movie.setVoteAvg(cursor.getString(voteAverageIdx));
+                    movie.setReleaseDate(cursor.getString(releaseDateIdx));
+                    movie.setFavourite(true);
+                    retMovies.add(movie);
+                }
+                return retMovies;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
             }
         };
     }

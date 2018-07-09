@@ -25,8 +25,8 @@ import butterknife.ButterKnife;
 
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieViewHolder> {
 
-    private List<Movie> mMovies;
-    private LibraryItemOnClickListener mClickListener;
+    private List<Movie> movies;
+    private LibraryItemOnClickListener clickListener;
 
     public LibraryAdapter(@NonNull LibraryItemOnClickListener clickListener) {
         this(null, clickListener);
@@ -34,8 +34,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
 
     public LibraryAdapter(@Nullable List<Movie> movies,
                           @NonNull LibraryItemOnClickListener clickListener) {
-        this.mMovies = movies;
-        this.mClickListener = clickListener;
+        this.movies = movies;
+        this.clickListener = clickListener;
     }
 
     //region Overridden Methods
@@ -50,23 +50,23 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.MovieVie
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        final Movie movie = mMovies.get(position);
-        holder.bind(movie, mClickListener);
+        final Movie movie = movies.get(position);
+        holder.bind(movie, clickListener);
     }
 
     @Override
     public int getItemCount() {
-        return mMovies != null ? mMovies.size() : 0;
+        return movies != null ? movies.size() : 0;
     }
     //endregion Overridden Methods
 
     public void setMovies(List<Movie> movies) {
-        this.mMovies = movies;
+        this.movies = movies;
         notifyDataSetChanged();
     }
 
     public void clear() {
-        this.mMovies = null;
+        this.movies = null;
         notifyDataSetChanged();
     }
 
