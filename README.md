@@ -25,7 +25,7 @@ To be able to run this app you need an **API key** for TheMovieDb. To create you
  view gets updated correctly.
  - [x] When a movie poster thumbnail is selected, the movie details screen is launched.
  - [ ] When a trailer is selected, app uses an Intent to launch the trailer.
- - [ ] In the movies detail screen, a user can tap a button(for example, a star) to mark it as a 
+ - [x] In the movies detail screen, a user can tap a button(for example, a star) to mark it as a 
  Favorite.
  
 ### Network API Implementation
