@@ -37,8 +37,8 @@ To be able to run this app you need an **API key** for TheMovieDb. To create you
  in a background thread and displays those details when the user selects a movie.
  
 ### Data Persistence
- - [ ] The titles and IDs of the user’s favorite movies are stored in a native SQLite database and 
+ - [x] The titles and IDs of the user’s favorite movies are stored in a native SQLite database and 
  are exposed via a `ContentProvider`. This `ContentProvider` is updated whenever the user favorites 
  or unfavorites a movie. No other persistence libraries are used.
- - [ ] When the "favorites" setting option is selected, the main view displays the entire favorites 
+ - [x] When the "favorites" setting option is selected, the main view displays the entire favorites 
  collection based on movie ids stored in the `ContentProvider`.
