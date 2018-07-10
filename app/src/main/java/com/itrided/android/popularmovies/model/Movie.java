@@ -28,7 +28,6 @@ public class Movie implements Parcelable {
     private String backdrop;
     private String voteAvg;
     private String plotSynopsis;
-    private String trailer;
     private boolean favourite;
 //    private String language;
 //    private String genres;

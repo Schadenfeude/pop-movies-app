@@ -21,6 +21,8 @@ public class MovieDbUtils {
     private static final String IMAGES_RESOLUTION = "w500/";
     private static final String IMAGES_BASE_URL = "https://image.tmdb.org/t/p/" + IMAGES_RESOLUTION;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    private static final String VIDEOS_SEGMENT = "videos";
+    private static final String REVIEWS_SEGMENT = "reviews";
     private static final String LANGUAGE_KEY = "language";
     private static final String LANGUAGE_VAL = "en-US";
     private static final String API_KEY = "api_key";
@@ -60,12 +62,38 @@ public class MovieDbUtils {
                 .url(httpUrl)
                 .build();
     }
+
+    public static Request buildTrailersRequest(@NonNull String movieId) {
+        final HttpUrl httpUrl = HttpUrl.parse(BASE_URL).newBuilder()
+                .addPathSegment(movieId)
+                .addPathSegment(VIDEOS_SEGMENT)
+                .addQueryParameter(API_KEY, BuildConfig.MOVIEDB_API_KEY)
+                .addQueryParameter(LANGUAGE_KEY, LANGUAGE_VAL)
+                .build();
+
+        return new Request.Builder()
+                .url(httpUrl)
+                .build();
+    }
+
+    public static Request buildReviewsRequest(@NonNull String movieId) {
+        final HttpUrl httpUrl = HttpUrl.parse(BASE_URL).newBuilder()
+                .addPathSegment(movieId)
+                .addPathSegment(REVIEWS_SEGMENT)
+                .addQueryParameter(API_KEY, BuildConfig.MOVIEDB_API_KEY)
+                .addQueryParameter(LANGUAGE_KEY, LANGUAGE_VAL)
+                .build();
+
+        return new Request.Builder()
+                .url(httpUrl)
+                .build();
+    }
     //endregion API Methods
 
     //region Private Methods
-    private static Request buildMovieRequest(@NonNull String movie) {
+    private static Request buildMovieRequest(@NonNull String movieId) {
         final HttpUrl httpUrl = HttpUrl.parse(BASE_URL).newBuilder()
-                .addPathSegment(movie)
+                .addPathSegment(movieId)
                 .addQueryParameter(API_KEY, BuildConfig.MOVIEDB_API_KEY)
                 .addQueryParameter(LANGUAGE_KEY, LANGUAGE_VAL)
                 .build();

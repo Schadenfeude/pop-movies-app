@@ -69,7 +69,6 @@ public class MovieLoader {
                         })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(responseObserver));
-
     }
 
     public static DisposableSingleObserver<Cursor> getFavouritesObserver(@NonNull final LibraryAdapter libraryAdapter) {
@@ -80,7 +79,7 @@ public class MovieLoader {
             }
 
             private ArrayList<Movie> readMovieFromCursor(Cursor cursor) {
-                final ArrayList<Movie> retMovies = new ArrayList<>();
+                final ArrayList<Movie> retMovies = new ArrayList<>(cursor.getCount());
                 for (int i = 0; i < cursor.getCount(); i++) {
                     int idIdx = cursor.getColumnIndex(MovieContract
                             .MovieEntry._ID);
