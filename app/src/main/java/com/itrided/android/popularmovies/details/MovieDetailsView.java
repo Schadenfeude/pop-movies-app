@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
 import com.itrided.android.popularmovies.model.Movie;
+import com.itrided.android.popularmovies.model.Review;
 import com.itrided.android.popularmovies.model.Trailer;
 import com.itrided.android.popularmovies.persistence.MovieContract;
 import com.itrided.android.popularmovies.utils.ImageLoader;
@@ -61,6 +62,8 @@ public class MovieDetailsView extends CoordinatorLayout {
 
     @BindView(R.id.trailers_rv)
     RecyclerView rvTrailers;
+    @BindView(R.id.reviews_rv)
+    RecyclerView rvReviews;
 
     private Movie movie;
     private ContentResolver contentResolver;
@@ -102,7 +105,9 @@ public class MovieDetailsView extends CoordinatorLayout {
         tvReleaseDate.setText(movieDetails.getReleaseDate());
         refreshMovieFavoriteStatus(contentResolver);
 
-        addTrailers(String.valueOf(movie.getId()));
+        final String movieId = String.valueOf(movie.getId());
+        addTrailers(movieId);
+        addReviews(movieId);
     }
 
     public void setTrailerListener(TrailerOnClickListener trailerListener) {
@@ -128,6 +133,32 @@ public class MovieDetailsView extends CoordinatorLayout {
                     final TrailersAdapter trailersAdapter = new TrailersAdapter(trailersList, trailerListener);
 
                     rvTrailers.setAdapter(trailersAdapter);
+                } catch (NullPointerException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        };
+    }
+
+    private void addReviews(@NonNull String movieId) {
+        MovieLoader.loadReviews(movieId, getReviewResponseObserver());
+    }
+
+    private DisposableSingleObserver<Response> getReviewResponseObserver() {
+        return new DisposableSingleObserver<Response>() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    final String movieReviewsJson = response.body().string();
+                    final ArrayList<Review> reviewsList = JSONUtils.parseReviews(movieReviewsJson);
+                    final ReviewsAdapter reviewsAdapter = new ReviewsAdapter(reviewsList);
+
+                    rvReviews.setAdapter(reviewsAdapter);
                 } catch (NullPointerException | IOException e) {
                     e.printStackTrace();
                 }

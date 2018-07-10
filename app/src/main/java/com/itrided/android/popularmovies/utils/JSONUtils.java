@@ -92,7 +92,42 @@ public class JSONUtils {
 
     @Nullable
     public static ArrayList<Review> parseReviews(@NonNull String movieReviewsJsonString) {
+        try {
+            final JSONObject reviewsJson = new JSONObject(movieReviewsJsonString);
+            final JSONArray results = reviewsJson.optJSONArray(RESULTS_KEY);
+            final ArrayList<Review> reviews = new ArrayList<>(results.length());
+
+            Review review;
+            for (int i = 0; i < results.length(); i++) {
+                review = parseReview(results.getJSONObject(i).toString());
+                reviews.add(review);
+            }
+
+            return reviews;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return null;
+    }
+
+    @Nullable
+    private static Review parseReview(@NonNull String movieReviewJsonString) {
+        Review review = null;
+
+        try {
+            final JSONObject reviewJson = new JSONObject(movieReviewJsonString);
+
+            final String id = reviewJson.optString(ID_KEY, FALLBACK);
+            final String author = reviewJson.optString(AUTHOR_KEY, FALLBACK);
+            final String content = reviewJson.optString(CONTENT_KEY, FALLBACK);
+            final String url = reviewJson.optString(URL_KEY, FALLBACK);
+
+            review = new Review(id, author, content, url);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return review;
     }
 
     @Nullable

@@ -138,4 +138,24 @@ public class MovieLoader {
                         .subscribeOn(Schedulers.io())
                         .subscribeWith(responseObserver));
     }
+
+    public static void loadReviews(@NonNull String movieId,
+                                   @NonNull DisposableSingleObserver<Response> responseObserver) {
+        final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+        compositeDisposable.add(
+                Single
+                        .create((SingleOnSubscribe<Response>) emitter -> {
+                            final OkHttpClient okHttpClient = new OkHttpClient();
+                            final Request reviewsRequest = MovieDbUtils.buildReviewsRequest(movieId);
+                            final Response response = okHttpClient.newCall(reviewsRequest).execute();
+
+                            if (!emitter.isDisposed()) {
+                                emitter.onSuccess(response);
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribeWith(responseObserver));
+    }
 }

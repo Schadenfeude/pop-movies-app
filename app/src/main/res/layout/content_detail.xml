@@ -109,6 +109,10 @@
             <include
                     layout="@layout/trailers_detail"
                     android:id="@+id/trailers_container"/>
+
+            <include
+                    layout="@layout/reviews_detail"
+                    android:id="@+id/reviews_container"/>
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
