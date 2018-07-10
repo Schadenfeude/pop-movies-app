@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/trailers_item_padding"
+        tools:showIn="@layout/trailers_detail">
 
     <ImageView
             android:id="@+id/trailer_background_iv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/trailers_list_item_width"
+            android:layout_height="@dimen/trailers_list_item_height"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            tools:src="@color/colorPrimary"/>
+            tools:src="@tools:sample/backgrounds/scenic"/>
 
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_baseline_play_circle_outline"/>
-</FrameLayout>
+            android:src="@drawable/ic_baseline_play_circle_outline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+            android:id="@+id/trailer_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/trailer_title_padding"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@android:color/white"
+            tools:text="Thank You for Smoking (2005): Official Trailer"
+            app:layout_constraintLeft_toLeftOf="@id/trailer_background_iv"
+            app:layout_constraintRight_toRightOf="@id/trailer_background_iv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+</android.support.constraint.ConstraintLayout>

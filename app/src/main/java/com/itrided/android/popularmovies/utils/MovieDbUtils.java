@@ -19,8 +19,12 @@ public class MovieDbUtils {
 
     //region Private Fields
     private static final String IMAGES_RESOLUTION = "w500/";
+    private static final String YOUTUBE_IMAGE = "0.jpg";
+
     private static final String IMAGES_BASE_URL = "https://image.tmdb.org/t/p/" + IMAGES_RESOLUTION;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+    private static final String YOUTUBE_IMAGES_BASE_URL = "https://img.youtube.com/vi/";
+
     private static final String VIDEOS_SEGMENT = "videos";
     private static final String REVIEWS_SEGMENT = "reviews";
     private static final String LANGUAGE_KEY = "language";
@@ -56,6 +60,17 @@ public class MovieDbUtils {
         final String removedSlashesImageUrl = imageUrl.replace("/", "");
         final HttpUrl httpUrl = HttpUrl.parse(IMAGES_BASE_URL).newBuilder()
                 .addPathSegment(removedSlashesImageUrl)
+                .build();
+
+        return new Request.Builder()
+                .url(httpUrl)
+                .build();
+    }
+
+    public static Request buildTrailerThumbnailRequest(@NonNull String youTubeKey) {
+        final HttpUrl httpUrl = HttpUrl.parse(YOUTUBE_IMAGES_BASE_URL).newBuilder()
+                .addPathSegment(youTubeKey)
+                .addPathSegment(YOUTUBE_IMAGE)
                 .build();
 
         return new Request.Builder()

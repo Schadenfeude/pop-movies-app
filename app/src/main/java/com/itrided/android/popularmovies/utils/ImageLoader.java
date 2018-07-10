@@ -48,6 +48,16 @@ public class ImageLoader {
                 .into(imageView);
     }
 
+    public void loadTrailerImageIntoTarget(@NonNull String youTubeKey, @NonNull ImageView imageView) {
+        final Request imageRequest = MovieDbUtils.buildTrailerThumbnailRequest(youTubeKey);
+        final Uri imageUri = Uri.parse(imageRequest.url().toString());
+
+        pablo.load(imageUri)
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_theaters)
+                .into(imageView);
+    }
+
     private static ThreadPoolExecutor getThreadPoolExecutor() {
         return new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME_SEC,
                 TimeUnit.SECONDS, new LinkedBlockingQueue<>(), new PicassoThreadFactory());

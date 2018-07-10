@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -16,8 +17,14 @@ import android.widget.TextView;
 
 import com.itrided.android.popularmovies.R;
 import com.itrided.android.popularmovies.model.Movie;
+import com.itrided.android.popularmovies.model.Trailer;
 import com.itrided.android.popularmovies.persistence.MovieContract;
 import com.itrided.android.popularmovies.utils.ImageLoader;
+import com.itrided.android.popularmovies.utils.JSONUtils;
+import com.itrided.android.popularmovies.utils.MovieLoader;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +33,7 @@ import io.reactivex.SingleEmitter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
+import okhttp3.Response;
 
 /**
  * Created by Daniel on 12.03.18.
@@ -51,9 +59,13 @@ public class MovieDetailsView extends CoordinatorLayout {
     @BindView(R.id.release_date_tv)
     TextView tvReleaseDate;
 
-    private ContentResolver contentResolver;
+    @BindView(R.id.trailers_rv)
+    RecyclerView rvTrailers;
+
     private Movie movie;
+    private ContentResolver contentResolver;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private TrailerOnClickListener trailerListener;
 
     public MovieDetailsView(Context context) {
         super(context);
@@ -89,10 +101,43 @@ public class MovieDetailsView extends CoordinatorLayout {
         tvRating.setText(movieDetails.getVoteAvg());
         tvReleaseDate.setText(movieDetails.getReleaseDate());
         refreshMovieFavoriteStatus(contentResolver);
+
+        addTrailers(String.valueOf(movie.getId()));
+    }
+
+    public void setTrailerListener(TrailerOnClickListener trailerListener) {
+        this.trailerListener = trailerListener;
     }
 
     public Movie getMovie() {
         return movie;
+    }
+
+    private void addTrailers(@NonNull String movieId) {
+        MovieLoader.loadTrailers(movieId, getTrailerResponseObserver());
+    }
+
+    private DisposableSingleObserver<Response> getTrailerResponseObserver() {
+        return new DisposableSingleObserver<Response>() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    final String movieTrailersJson = response.body().string();
+                    //todo filter list by type to only trailers
+                    final ArrayList<Trailer> trailersList = JSONUtils.parseTrailers(movieTrailersJson);
+                    final TrailersAdapter trailersAdapter = new TrailersAdapter(trailersList, trailerListener);
+
+                    rvTrailers.setAdapter(trailersAdapter);
+                } catch (NullPointerException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        };
     }
 
     private void toggleFavourite(@NonNull ContentResolver contentResolver) {

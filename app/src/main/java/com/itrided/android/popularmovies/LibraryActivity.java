@@ -16,6 +16,7 @@ import com.itrided.android.popularmovies.utils.MovieDbUtils;
 import com.itrided.android.popularmovies.utils.MovieLoader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,7 +27,7 @@ import okhttp3.Response;
 public class LibraryActivity extends AppCompatActivity {
 
     //region Constants
-//    public static final String MOVIES = "MOVIES";
+    public static final String MOVIES = "MOVIES";
 
     private static final int REQUEST_DETAILS = 100;
     //endregion Constants
@@ -104,13 +105,13 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void loadMovies() {
-//        final ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(MOVIES);
+        final ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(MOVIES);
 
-//        if (movies == null || movies.isEmpty()) {
-        MovieLoader.loadMovies(MovieDbUtils.TOP_RATED, getMovieResponseObserver());
-//        } else {
-//            libraryAdapter.setMovies(movies);
-//        }
+        if (movies == null || movies.isEmpty()) {
+            MovieLoader.loadMovies(MovieDbUtils.TOP_RATED, getMovieResponseObserver());
+        } else {
+            libraryAdapter.setMovies(movies);
+        }
     }
 
     private DisposableSingleObserver<Response> getMovieResponseObserver() {

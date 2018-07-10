@@ -118,4 +118,24 @@ public class MovieLoader {
             }
         };
     }
+
+    public static void loadTrailers(@NonNull String movieId,
+                                    @NonNull DisposableSingleObserver<Response> responseObserver) {
+        final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+        compositeDisposable.add(
+                Single
+                        .create((SingleOnSubscribe<Response>) emitter -> {
+                            final OkHttpClient okHttpClient = new OkHttpClient();
+                            final Request trailerRequest = MovieDbUtils.buildTrailersRequest(movieId);
+                            final Response response = okHttpClient.newCall(trailerRequest).execute();
+
+                            if (!emitter.isDisposed()) {
+                                emitter.onSuccess(response);
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribeWith(responseObserver));
+    }
 }
