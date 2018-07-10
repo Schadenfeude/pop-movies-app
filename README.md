@@ -33,7 +33,7 @@ To be able to run this app you need an **API key** for TheMovieDb. To create you
  criteria specified in the settings menu.
  - [x] App requests for related videos for a selected movie via the `/movie/{id}/videos` endpoint 
  in a background thread and displays those details when the user selects a movie.
- - [ ] App requests for user reviews for a selected movie via the `/movie/{id}/reviews` endpoint 
+ - [x] App requests for user reviews for a selected movie via the `/movie/{id}/reviews` endpoint 
  in a background thread and displays those details when the user selects a movie.
  
 ### Data Persistence
