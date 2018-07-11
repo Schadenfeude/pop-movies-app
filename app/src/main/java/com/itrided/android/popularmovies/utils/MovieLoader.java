@@ -22,7 +22,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MovieLoader {
+public final class MovieLoader {
+
+    private MovieLoader() {
+    }
 
     @Nullable
     public static void loadMovies(@NonNull @MovieDbUtils.MovieCategory String category,

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by Daniel on 4.03.18.
  */
 
-public class JSONUtils {
+public final class JSONUtils {
 
     // General Properties
     private static final String RESULTS_KEY = "results";
@@ -46,6 +46,9 @@ public class JSONUtils {
     private static final String URL_KEY = "url";
 
     private static final String FALLBACK = "Information not available";
+
+    private JSONUtils() {
+    }
 
     @Nullable
     public static Movie parseMovieDetails(@NonNull String movieJsonString) {

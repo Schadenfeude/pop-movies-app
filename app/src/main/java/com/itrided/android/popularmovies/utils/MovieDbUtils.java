@@ -15,7 +15,7 @@ import okhttp3.Request;
  * Created by Daniel on 2.03.18.
  */
 
-public class MovieDbUtils {
+public final class MovieDbUtils {
 
     //region Private Fields
     private static final String IMAGES_RESOLUTION = "w500/";
@@ -46,6 +46,9 @@ public class MovieDbUtils {
     public static final String POPULAR = "popular";
     public static final String FAVOURITE = "favourite";
     //endregion Public Fields
+
+    private MovieDbUtils() {
+    }
 
     //region API Methods
     public static Request buildMovieCategoryRequest(@NonNull @MovieCategory String category) {

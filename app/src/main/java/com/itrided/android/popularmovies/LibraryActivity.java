@@ -2,6 +2,7 @@ package com.itrided.android.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class LibraryActivity extends AppCompatActivity {
     public static final String MOVIES = "MOVIES";
 
     private static final int REQUEST_DETAILS = 100;
+    private static final String SELECTED_CATEGORY = "selectedCategory";
     //endregion Constants
 
     //region Fields
@@ -52,7 +54,9 @@ public class LibraryActivity extends AppCompatActivity {
 
         setupAdapter();
         setupBottomNavigation();
-        loadMovies();
+        if (savedInstanceState == null) {
+            loadMovies();
+        }
     }
 
     @Override
@@ -69,6 +73,26 @@ public class LibraryActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        final int selectedCategory = navigation == null
+                ? R.id.navigation_top_rated : navigation.getSelectedItemId();
+
+        outState.putInt(SELECTED_CATEGORY, selectedCategory);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        final int selectedCategory = savedInstanceState.getInt(SELECTED_CATEGORY, R.id.navigation_top_rated);
+
+        loadMovieByCategory(selectedCategory);
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     //endregion Overridden Methods
 
     //region Private Methods
@@ -87,21 +111,23 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        navigation.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.navigation_top_rated:
-                    MovieLoader.loadMovies(MovieDbUtils.TOP_RATED, getMovieResponseObserver());
-                    return true;
-                case R.id.navigation_popular:
-                    MovieLoader.loadMovies(MovieDbUtils.POPULAR, getMovieResponseObserver());
-                    return true;
-                case R.id.navigation_favourite:
-                    MovieLoader.loadFavourites(getContentResolver(),
-                            MovieLoader.getFavouritesObserver(libraryAdapter));
-                    return true;
-            }
-            return false;
-        });
+        navigation.setOnNavigationItemSelectedListener(item -> loadMovieByCategory(item.getItemId()));
+    }
+
+    private boolean loadMovieByCategory(@IdRes int itemId) {
+        switch (itemId) {
+            case R.id.navigation_top_rated:
+                MovieLoader.loadMovies(MovieDbUtils.TOP_RATED, getMovieResponseObserver());
+                return true;
+            case R.id.navigation_popular:
+                MovieLoader.loadMovies(MovieDbUtils.POPULAR, getMovieResponseObserver());
+                return true;
+            case R.id.navigation_favourite:
+                MovieLoader.loadFavourites(getContentResolver(),
+                        MovieLoader.getFavouritesObserver(libraryAdapter));
+                return true;
+        }
+        return false;
     }
 
     private void loadMovies() {
@@ -130,7 +156,7 @@ public class LibraryActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                libraryAdapter.clear();
             }
         };
     }

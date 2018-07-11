@@ -20,7 +20,7 @@ import okhttp3.Request;
  * Created by Daniel on 6.03.18.
  */
 
-public class ImageLoader {
+public final class ImageLoader {
 
     private static final int CORE_POOL_SIZE = 2;
     private static final int MAX_POOL_SIZE = 10;

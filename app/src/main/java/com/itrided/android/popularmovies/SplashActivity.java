@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.itrided.android.popularmovies.model.Movie;
+import com.itrided.android.popularmovies.utils.ConnectivityUtils;
 import com.itrided.android.popularmovies.utils.JSONUtils;
 import com.itrided.android.popularmovies.utils.MovieDbUtils;
 import com.itrided.android.popularmovies.utils.MovieLoader;
@@ -27,7 +28,13 @@ public class SplashActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
 
-        loadMoviesAndStartLibrary();
+        if (ConnectivityUtils.isNetworkConnected(this)) {
+            loadMoviesAndStartLibrary();
+        } else {
+            final Intent intent = new Intent(this, LibraryActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void loadMoviesAndStartLibrary() {
