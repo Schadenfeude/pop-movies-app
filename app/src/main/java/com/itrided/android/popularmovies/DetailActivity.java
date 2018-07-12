@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.itrided.android.popularmovies.details.MovieDetailsView;
 import com.itrided.android.popularmovies.details.TrailerOnClickListener;
@@ -22,6 +23,12 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setupDetailsView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        detailsView.dispose();
+        super.onDestroy();
     }
 
     @Override
@@ -51,7 +58,11 @@ public class DetailActivity extends AppCompatActivity {
             final Uri trailerUri = Uri.parse(YOUTUBE_URI_SCHEME + trailer.getYouTubeKey());
             final Intent intent = new Intent(Intent.ACTION_VIEW, trailerUri);
 
-            startActivity(intent);
+            if (intent.resolveActivity(getPackageManager()) == null) {
+                Toast.makeText(this, getString(R.string.youtube_error), Toast.LENGTH_LONG).show();
+            } else {
+                startActivity(intent);
+            }
         };
     }
 }

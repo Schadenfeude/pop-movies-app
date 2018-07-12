@@ -118,6 +118,12 @@ public class MovieDetailsView extends CoordinatorLayout {
         return movie;
     }
 
+    public void dispose() {
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
+    }
+
     private void addTrailers(@NonNull String movieId) {
         MovieLoader.loadTrailers(movieId, getTrailerResponseObserver());
     }

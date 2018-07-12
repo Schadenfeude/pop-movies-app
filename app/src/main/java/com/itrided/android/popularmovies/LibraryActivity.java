@@ -2,6 +2,7 @@ package com.itrided.android.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -32,6 +33,7 @@ public class LibraryActivity extends AppCompatActivity {
 
     private static final int REQUEST_DETAILS = 100;
     private static final String SELECTED_CATEGORY = "selectedCategory";
+    private static final String LAYOUT_STATE = "layoutState";
     //endregion Constants
 
     //region Fields
@@ -43,6 +45,8 @@ public class LibraryActivity extends AppCompatActivity {
     BottomNavigationView navigation;
 
     private LibraryAdapter libraryAdapter;
+    private Parcelable layoutState;
+    private RecyclerView.LayoutManager layoutManager;
     //endregion Fields
 
     //region Overridden Methods
@@ -78,19 +82,33 @@ public class LibraryActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         final int selectedCategory = navigation == null
                 ? R.id.navigation_top_rated : navigation.getSelectedItemId();
+        final Parcelable layoutState = layoutManager.onSaveInstanceState();
 
         outState.putInt(SELECTED_CATEGORY, selectedCategory);
+        outState.putParcelable(LAYOUT_STATE, layoutState);
 
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState == null) {
+            return;
+        }
         final int selectedCategory = savedInstanceState.getInt(SELECTED_CATEGORY, R.id.navigation_top_rated);
+        layoutState = savedInstanceState.getParcelable(LAYOUT_STATE);
 
         loadMovieByCategory(selectedCategory);
+    }
 
-        super.onRestoreInstanceState(savedInstanceState);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (layoutState != null) {
+            layoutManager.onRestoreInstanceState(layoutState);
+        }
     }
 
     //endregion Overridden Methods
@@ -106,8 +124,9 @@ public class LibraryActivity extends AppCompatActivity {
         final int libraryGridColumns = getResources().getInteger(R.integer.library_column_count);
 
         libraryAdapter = new LibraryAdapter(itemOnClickListener);
+        layoutManager = new GridLayoutManager(this, libraryGridColumns);
         mLibraryRecyclerView.setAdapter(libraryAdapter);
-        mLibraryRecyclerView.setLayoutManager(new GridLayoutManager(this, libraryGridColumns));
+        mLibraryRecyclerView.setLayoutManager(layoutManager);
     }
 
     private void setupBottomNavigation() {
@@ -149,6 +168,9 @@ public class LibraryActivity extends AppCompatActivity {
                     final List<Movie> movies = JSONUtils.parseMovieList(topRatedMoviesJson);
 
                     libraryAdapter.setMovies(movies);
+                    if (layoutState != null) {
+                        layoutManager.onRestoreInstanceState(layoutState);
+                    }
                 } catch (NullPointerException | IOException e) {
                     e.printStackTrace();
                 }

@@ -107,4 +107,6 @@
     <string name="title_overview">Overview:</string>
     <string name="title_trailers">Trailers:</string>
     <string name="title_reviews">User Reviews:</string>
+    <string name="youtube_error">There is no app on your phone that can handle this intent.
+        \nPlease install YouTube or similar app in order to view trailers.</string>
 </resources>
